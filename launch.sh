@@ -14,6 +14,10 @@ for _ in $(seq 1 20); do
 done
 pkill -u "$UID" -x polybar 2>/dev/null
 
+# Release the lock before spawning the (long-running) bars below - otherwise
+# they inherit fd 9 and keep the lock held forever, blocking every future run.
+exec 9>&-
+
 echo "---" | tee -a /tmp/polybar_mybar.log
 
 for m in $(polybar --list-monitors | cut -d":" -f1); do
