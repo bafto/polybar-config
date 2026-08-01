@@ -18,10 +18,10 @@ pkill -u "$UID" -x polybar 2>/dev/null
 # they inherit fd 9 and keep the lock held forever, blocking every future run.
 exec 9>&-
 
-echo "---" | tee -a /tmp/polybar_mybar.log
+echo "---" >> /tmp/polybar_mybar.log
 
 for m in $(polybar --list-monitors | cut -d":" -f1); do
-	MONITOR=$m polybar mybar 2>&1 | tee -a /tmp/polybar_mybar.log & disown
+	MONITOR=$m polybar mybar >> /tmp/polybar_mybar.log 2>&1 & disown
 done
 
 echo "Bars launched..."
